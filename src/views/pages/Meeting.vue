@@ -22,7 +22,7 @@
         <h5>{{message}}</h5>
       </center>
       <div slot="footer" class="w-100">
-         <CRow>
+        <CRow>
           <div class="col"></div>
           <div style="padding-left: 40px;" align="left">
             <CButton @click="yesItem()" color="success">
@@ -32,6 +32,26 @@
           <div style="padding-left: 20px;padding-right: 20px;">
             <CButton @click="warningModal=false" color="danger">
               Hayır
+            </CButton>
+          </div>
+
+        </CRow>
+      </div>
+    </CModal>
+    <!-- multipleCopy Modal Component -->
+    <CModal :show.sync="copyModal" :closeOnBackdrop="false">
+      <CInput horizontal type="number" label="Satır Sayısı:" style="width:auto" :value="copylineCount" v-model="copylineCount" :min="1" />
+      <div slot="footer" class="w-100">
+        <CRow>
+          <div class="col"></div>
+          <div style="padding-left: 40px;" align="left">
+            <CButton @click="multipleCopyMethod(multipleCopyItem)" color="success">
+              Çoklu Kopyala
+            </CButton>
+          </div>
+          <div style="padding-left: 20px;padding-right: 20px;">
+            <CButton @click="copyModal=false" color="danger">
+              Vazgeç
             </CButton>
           </div>
 
@@ -80,9 +100,18 @@
         </CRow>
 
         <CDataTable column-filter :items="items" :fields="fields" :noItemsView="{ noResults: 'Sonuç Yok', noItems: messageTable }" hover sorter items-per-page-select :items-per-page="5" :itemsPerPageSelect="{label: 'Sayfalar'}" pagination>
+          <template #multipleCopy="{item}">
+
+            <td>
+              <CButton style="margin:3px" size="sm" @click="toogleMultipleCopy(item)" color="success">
+                Çokla
+              </CButton>
+            </td>
+
+          </template>
           <template #copy="{item}">
             <td>
-              <CButton style="margin:3px" size="sm" @click="copyLine(item)" color="success">
+              <CButton style="margin:3px" size="sm" @click="copyLine(item)" color="dark">
                 Kopyala
               </CButton>
             </td>
@@ -226,7 +255,11 @@ export default {
           _style: "min-width=100px",
         },
         { key: "version", label: "Hat Bilgisi", _style: "min-width=100px" },
-        { key: "multipleCopy", label: "Çoklu Kopyala", _style: "min-width=100px" },
+        {
+          key: "multipleCopy",
+          label: "Çoklu Kopyala",
+          _style: "min-width=100px",
+        },
         { key: "copy", label: "Satırı Kopyala", _style: "min-width=100px" },
         { key: "update", label: "Düzenle", _style: "width:10px" },
         { key: "delete", label: "Sil", _style: "min-width=100px" },
@@ -243,11 +276,14 @@ export default {
       dangerModal: false,
       successModal: false,
       warningModal: false,
+      copyModal: false,
       startDate: new Date().toISOString().substr(0, 10),
       endDate: new Date().toISOString().substr(0, 10),
       getDate: false,
       uploading: false,
       elementCover: false,
+      copylineCount: 0,
+      multipleCopyItem: [],
     };
   },
   mounted() {
@@ -259,7 +295,7 @@ export default {
   methods: {
     fetch() {
       this.uploading = true;
-      this.items=[];
+      this.items = [];
       axios
         .get(`${CONFIG.api.invokeUrl}meeting`, {
           headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
@@ -364,8 +400,8 @@ export default {
       if (this.items.length !== 0) this.items.map((x) => this.deleteItem(x));
     },
     deleteAllItem() {
-      this.message="Hepsi silinecek emin misiniz?"
-      this.warningModal=true;
+      this.message = "Hepsi silinecek emin misiniz?";
+      this.warningModal = true;
     },
     toogleUpdeteButon(item) {
       this.updateButton = !this.updateButton;
@@ -441,6 +477,18 @@ export default {
           this.teams = response.data.map((x) => x.companyName);
         })
         .catch((e) => {});
+    },
+    multipleCopyMethod(item) {
+      this.copyModal = false;
+      this.uploading = true;
+      for (var i = 0; i < this.copylineCount; i++) {
+        this.copyLine(item);
+      }
+    },
+    toogleMultipleCopy(item) {
+      this.copylineCount=0;
+      this.copyModal = true;
+      this.multipleCopyItem = item;
     },
   },
 };

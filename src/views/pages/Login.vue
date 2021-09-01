@@ -3,13 +3,21 @@
     <CContainer>
       <CRow class="justify-content-center">
         <CCol md="8">
+
           <CCardGroup>
-            <CCard class="p-4">
+            <CCard class="p-2">
+              <CCardHeader>
+
+                <center> <img src="/img/logo.jpg" width="auto" height="75"></center>
+              
+              </CCardHeader>
               <CCardBody>
-                <CAlert color="danger"  v-if="dangerModal">
+                <CAlert color="danger" v-if="dangerModal">
                   Tekrar deneyiniz.
                 </CAlert>
+
                 <CForm>
+
                   <h1>Kısıt Takip</h1>
                   <p class="text-muted">Hesabınıza Giriş Yapınız</p>
                   <CInput placeholder="Username" v-model="username" autocomplete="username email">
@@ -23,12 +31,13 @@
                     </template>
                   </CInput>
                   <CRow>
-                    <CCol col="6" class="text-left">
+                    <CCol col="12" class="text-center">
                       <CButton color="primary" class="px-4" @click="login()">Giriş</CButton>
                     </CCol>
 
                   </CRow>
                 </CForm>
+               
               </CCardBody>
               <!-- Looading Component -->
               <CElementCover v-if="uploading" :show.sync="elementCover" :boundaries="[{ sides: ['top', 'left'], query: '.media-body' }]" :opacity="0.8">
@@ -36,7 +45,9 @@
                 <CSpinner size="5xl" color="success" />
               </CElementCover>
             </CCard>
+
           </CCardGroup>
+
         </CCol>
       </CRow>
 
@@ -58,12 +69,10 @@ export default {
       typeUser: "",
       uploading: false,
       elementCover: false,
-      dangerModal:false,
+      dangerModal: false,
     };
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
     login() {
       this.uploading = true;
@@ -76,19 +85,17 @@ export default {
           headers: { Authorization: `Basic ${token}` },
         })
         .then((response) => {
-          
           if (response.data !== null) {
             this.typeUser = response.data;
             TokenService.saveToken(token, this.typeUser);
             this.controlIsBlock();
-          }else{
-            this.dangerModal=true;
+          } else {
+            this.dangerModal = true;
           }
         })
         .catch((e) => {
-           this.uploading=false;
-          this.dangerModal=true;
-         
+          this.uploading = false;
+          this.dangerModal = true;
         });
     },
     controlIsBlock() {
@@ -109,7 +116,10 @@ export default {
             this.$router.push({ path: "/user" });
           }
         })
-        .catch((e) => { this.uploading=false;this.dangerModal=true;});
+        .catch((e) => {
+          this.uploading = false;
+          this.dangerModal = true;
+        });
     },
   },
 };

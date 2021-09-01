@@ -14,7 +14,7 @@
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto">
        <CHeaderNavItem class="d-md-down-none" to="/">
-   
+    <img src="/img/whiteWAT.png" alt="logo" width="50" height="50">
     </CHeaderNavItem>
      
       

@@ -286,6 +286,9 @@ export default {
             chargePerson: item.chargePerson,
             dateCurrent: item.dateCurrent,
             aboveLine: item.aboveLine,
+            treeAmount:item.treeAmount,
+            mip:item.mip,
+            tob:item.tob
           },
           { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
         )
@@ -317,6 +320,9 @@ export default {
             chargePerson: item.chargePerson,
             dateCurrent: item.dateCurrent,
             aboveLine: item.aboveLine,
+            treeAmount:item.treeAmount,
+            mip:item.mip,
+            tob:item.tob
           },
           { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
         )
@@ -395,6 +401,9 @@ export default {
             chargePerson: "",
             dateCurrent: "",
             aboveLine: item.aboveLine,
+            treeAmount:item.treeAmount,
+            mip:item.mip,
+            tob:item.tob
           },
           { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
         )

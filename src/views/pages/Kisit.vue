@@ -84,7 +84,7 @@
               </CButton>
             </template>
           </div>
-          <div class="col" style="padding-left:10px;padding-right:70px;">
+          <div class="col" style="padding-left:10px;padding-right:10px;">
             <template>
               <CButton color="light">
                 Kalan: {{totalDelayAmount-enteredDelayAmount}}
@@ -113,7 +113,7 @@
               Dağıt-Yakın
             </CButton>
           </div>
-          <div style="padding-left:10px;padding-right:20px;">
+          <div style="padding-left:10px;padding-right:200px;">
             <template>
               <CButton @click="seperatePlanDate()" color="dark" v-c-tooltip.hover="{
                   content: `Her bir kısıtın öteleme miktarını plandakilere eşitler.`
@@ -122,7 +122,7 @@
               </CButton>
             </template>
           </div>
-          <div style="padding-left:10px;padding-right:20px;">
+          <div style="padding-left:200px;padding-right:20px;">
             <template>
               <CButton @click="copy()" color="primary" horizontal v-c-tooltip="{
                   content: `İlk satırda girilen bilgileri diğer kısıtlara aynen kopyalar.`
@@ -351,8 +351,11 @@ export default {
         { key: "materialCode", label: "Malzeme Kodu", _style: "width:1cm" },
         { key: "materialText", label: "Malzeme", _style: "width:1cm" },
         { key: "plannedDate", label: "Plan Tarihi", _style: "width:1cm" },
-        { key: "amount", label: "Miktar", _style: "width:1cm" },
+        { key: "amount", label: "Plandaki Miktar", _style: "width:1cm" },
         { key: "customer", label: "Müşteri", _style: "width:1cm" },
+        { key: "treeAmount", label: "Miktar", _style: "width:1cm" },
+
+        { key: "tob", label: "Töb", _style: "width:1cm" },
       ],
       fieldsAdd: [
         { key: "materialCode", label: "Malzeme Kodu", _style: "width:1cm" },
@@ -708,6 +711,9 @@ export default {
             chargePerson: item.chargePerson,
             dateCurrent: item.dateCurrent,
             aboveLine: item.aboveLine,
+            treeAmount: item.treeAmount,
+            mip: item.mip,
+            tob: item.tob,
           },
           { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
         )
@@ -806,6 +812,9 @@ export default {
             chargePerson: constraintData.chargePerson,
             dateCurrent: constraintData.madeDate,
             aboveLine: constraintData.aboveLine,
+            treeAmount: constraintData.treeAmount,
+            mip: constraintData.mip,
+            tob: constraintData.tob,
           },
           { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
         )
@@ -871,6 +880,9 @@ export default {
             chargePerson: "",
             dateCurrent: "",
             aboveLine: constraintData.aboveLine,
+            treeAmount: item.treeAmount,
+            mip: item.mip,
+            tob: item.tob,
           },
           { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
         )
@@ -944,26 +956,28 @@ export default {
           parseInt(item.delayAmount) > parseInt(item.amount) ||
           item.delayAmount < 1
         ) {
-          if (item.delayReason === null || item.delayReason === "") {
-            this.messageModal = "Sebep giriniz.";
+           this.messageModal = "Öteleme miktarlarını kontrol ediniz.";
+          return false;
+        }
+        if (item.delayReason === null || item.delayReason === "") {
+          this.messageModal = "Sebep giriniz.";
 
-            return false;
-          }
-          if (item.companyTeam === null || item.companyTeam === "") {
-            this.messageModal = "Firma-Takım giriniz.";
+          return false;
+        }
+        if (item.companyTeam === null || item.companyTeam === "") {
+          this.messageModal = "Firma-Takım giriniz.";
 
-            return false;
-          }
-          if (item.chargePerson === null || item.chargePerson === "") {
-            this.messageModal = "Sorumlu birey giriniz.";
+          return false;
+        }
+        if (item.chargePerson === null || item.chargePerson === "") {
+          this.messageModal = "Sorumlu birey giriniz.";
 
-            return false;
-          }
-          if (item.delayDetail === null || item.delayDetail.length === 0) {
-            this.messageModal = "Öteleme tarihini giriniz.";
+          return false;
+        }
+        if (item.delayDetail === null || item.delayDetail.length === 0) {
+          this.messageModal = "Öteleme tarihini giriniz.";
 
-            return false;
-          }
+          return false;
         }
       }
       return true;
