@@ -183,6 +183,7 @@ export default {
     zaten arsivden cikarirken otomatik isaretlenmise gidecegi icin isMarked true olmalidir.*/
     fetchData() {
       this.items = [];
+      this.markedList=[];
       this.uploading = true;
       axios
         .get(`${CONFIG.api.invokeUrl}archiveConstraint`, {
@@ -212,8 +213,7 @@ export default {
         else this.fetchData();
         this.messageModal = "Arşivden Çıkarıldı";
         this.successModal = true;
-        this.markedList = [];
-      }
+              }
     },
     /**
      * Postlama islemi sirasinda kisitin bagli oldugu oteleme gecmisi arsivden put'lama islemi ile cikarilir.
@@ -366,6 +366,7 @@ export default {
      */
     fetchDataFromDate() {
       this.uploading = true;
+      this.markedList=[];
       axios
         .get(
           `${CONFIG.api.invokeUrl}archiveConstraint?startDate=${this.startDate}&endDate=${this.endDate}`,

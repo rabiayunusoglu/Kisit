@@ -76,12 +76,7 @@ export default [{
             to: '/delayHistory',
             icon: 'cil-file',
         },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Arşivlenmiş-Öteleme Geçmişleri',
-            to: '/archiveDelayHistory',
-            icon: 'cil-task',
-        },
+       
         /*{
             _name: 'CSidebarNavTitle',
             _children: ['']

@@ -465,12 +465,12 @@ export default {
         )
         .then((response) => {
           this.messageModal =
-            "Yan sanayiye ait olanlar toplantı sayfasına aktarıldı.";
+           "Yan sanayi firmalar ve ekipler toplantı sayfalarına aktarıldı.";
           this.successModal = true;
         })
         .catch((e) => {
           this.messageModal =
-            "Yan sanayiye ait olanlar toplantı sayfasına aktarılamadı.Tekrar Deneyiniz!";
+            "Yan sanayi firmalar ve ekipler toplantı sayfalarına aktarılamadı.Tekrar Deneyiniz!";
           this.dangerModal = true;
         });
     },

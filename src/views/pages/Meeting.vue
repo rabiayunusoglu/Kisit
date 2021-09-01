@@ -385,8 +385,6 @@ export default {
           headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
         })
         .then((response) => {
-          // this.message=("Silindi");
-          //this.successModal=true;
           if (this.getDate) this.fetchDataFromDate();
           else this.fetch();
         })

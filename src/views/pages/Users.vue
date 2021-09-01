@@ -181,6 +181,7 @@ export default {
             email: item.email,
             isActive: item.isActive,
             createdTime: item.createdTime,
+            permissionForConstraint: item.permissionForConstraint,
           },
           {
             headers: { Authorization: `Basic ${ServiceToken.getToken()}` },

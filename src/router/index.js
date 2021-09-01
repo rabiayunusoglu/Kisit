@@ -48,8 +48,7 @@ const ArchiveConstraint = () =>
     import('@/views/pages/ArchiveConstraint')
 const DelayHistory = () =>
     import('@/views/pages/DelayHistory')
-const ArchiveDelayHistory = () =>
-    import('@/views/pages/ArchiveDelayHistory')
+
 const Meeting = () =>
     import('@/views/pages/Meeting')
 const ZKP = () =>
@@ -154,15 +153,7 @@ function configRoutes() {
                     requiredPermissions: "A",
                 }
             },
-            {
-                path: 'archiveDelayHistory',
-                name: 'Arşivlenmiş Öteleme Geçmişleri',
-                component: ArchiveDelayHistory,
-                meta: {
-                    public: false,
-                    requiredPermissions: "A",
-                }
-            },
+           
             {
                 path: 'montage',
                 name: 'Montaj Üretim Planı',

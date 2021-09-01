@@ -974,7 +974,7 @@ export default {
 
           return false;
         }
-        if (item.delayDetail === null || item.delayDetail.length === 0) {
+        if (item.delayDate === null || item.delayDate.length === 0) {
           this.messageModal = "Öteleme tarihini giriniz.";
 
           return false;
