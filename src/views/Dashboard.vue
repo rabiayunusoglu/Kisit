@@ -348,7 +348,7 @@ export default {
     updateMethod(typeBlock, item, isBlock) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}user/${item.userID}`,
+          `user/${item.userID}`,
           {
             userID: item.userID,
             userType: item.userType,
@@ -357,9 +357,6 @@ export default {
             isActive: item.isActive,
             permissionForConstraint: isBlock,
             createdTime: item.createdTime,
-          },
-          {
-            headers: { Authorization: `Basic ${TokenService.getToken()}` },
           }
         )
         .then((response) => {})
@@ -367,9 +364,7 @@ export default {
     },
     fetchUsers() {
       axios
-        .get(`${CONFIG.api.invokeUrl}user`, {
-          headers: { Authorization: `Basic ${TokenService.getToken()}` },
-        })
+        .get(`user`)
         .then((response) => {
           this.itemsUsers = response.data;
           this.controlIsBlock();
@@ -395,9 +390,7 @@ export default {
     },
     fetch() {
       axios
-        .get(`${CONFIG.api.invokeUrl}user`, {
-          headers: { Authorization: `Basic ${TokenService.getToken()}` },
-        })
+        .get(`user`)
         .then((response) => {
           this.itemsUsers = response.data;
           this.controlBlock();

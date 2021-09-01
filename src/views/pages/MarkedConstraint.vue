@@ -154,12 +154,10 @@ export default {
     //Oteleme girilmis ve isaretlenmis olan kisitlar getirlir,'items' objesinin iceresine atilir.
     fetchData() {
       this.items = [];
-      this.archiveList=[];
+      this.archiveList = [];
       this.uploading = true;
       axios
-        .get(`${CONFIG.api.invokeUrl}constraint`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`constraint`)
         .then((response) => {
           this.uploading = false;
           var i = 0;
@@ -172,7 +170,6 @@ export default {
           //ilk basta, "Seç" blogu altinda, hepsi secili gelmesin diye false degerini atiyorum. Cunku switch butonlari bu degere gore sekronize calısıyor.
           // Secilenleri isaretten cikarirken ve arsivlerken dogru degerleri veriyorum.
           this.items.map((x) => (x.isMarked = false));
-         
         })
         .catch((e) => {
           this.uploading = false;
@@ -191,35 +188,31 @@ export default {
     },
     updateConstraintForNoMarked(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}constraint/${item.constraintID}`,
-          {
-            isMarked: false,
-            isDelayEntered: true,
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-             aboveLine:item.aboveLine,
-             treeAmount:item.treeAmount,
-            mip:item.mip,
-            tob:item.tob
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`constraint/${item.constraintID}`, {
+          isMarked: false,
+          isDelayEntered: true,
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          aboveLine: item.aboveLine,
+          treeAmount: item.treeAmount,
+          mip: item.mip,
+          tob: item.tob,
+        })
         .then((response) => {
           this.fetchData();
         })
@@ -229,35 +222,31 @@ export default {
     // 1) Girilen kisitin daha once oteleme girilmemis haline cevrilir.(Put request ile)
     deleteConstraint(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}constraint/${item.constraintID}`,
-          {
-            isMarked: false,
-            isDelayEntered: false,
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: "",
-            delayCode: "",
-            delayAmount: "",
-            delayDate: "",
-            delayReason: "",
-            delayDetail: "",
-            companyTeam: "",
-            chargePerson: "",
-            dateCurrent: "",
-             aboveLine:item.aboveLine,
-             treeAmount:item.treeAmount,
-            mip:item.mip,
-            tob:item.tob
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`constraint/${item.constraintID}`, {
+          isMarked: false,
+          isDelayEntered: false,
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: "",
+          delayCode: "",
+          delayAmount: "",
+          delayDate: "",
+          delayReason: "",
+          delayDetail: "",
+          companyTeam: "",
+          chargePerson: "",
+          dateCurrent: "",
+          aboveLine: item.aboveLine,
+          treeAmount: item.treeAmount,
+          mip: item.mip,
+          tob: item.tob,
+        })
         .then((response) => {
           this.deleteDelay(item);
           this.messageModal = "Başarıyla Silindi!";
@@ -272,9 +261,7 @@ export default {
     //2) Cevrildikten sonra, oteleme gecmisine girilmis oteleme silinir. (Delete request ile)
     deleteDelay(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}delayHistory/${item.delayID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`delayHistory/${item.delayID}`)
         .then((response) => {
           this.fetchData();
         })
@@ -289,24 +276,20 @@ export default {
     //delay arsivleniyor
     updateDelayHistory(delay) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}delayHistory/${delay.delayID}`,
-          {
-            isMarked: true,
-            isArchive: true,
-            delayID: delay.delayID,
-            productCode: delay.productCode,
-            delayCode: delay.delayCode,
-            delayAmount: delay.amount,
-            delayDate: delay.delayDate,
-            delayReason: delay.delayReason,
-            delayDetail: delay.delayDetail,
-            companyTeam: delay.companyTeam,
-            chargePerson: delay.chargePerson,
-            madeDate: delay.dateCurrent,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`delayHistory/${delay.delayID}`, {
+          isMarked: true,
+          isArchive: true,
+          delayID: delay.delayID,
+          productCode: delay.productCode,
+          delayCode: delay.delayCode,
+          delayAmount: delay.amount,
+          delayDate: delay.delayDate,
+          delayReason: delay.delayReason,
+          delayDetail: delay.delayDetail,
+          companyTeam: delay.companyTeam,
+          chargePerson: delay.chargePerson,
+          madeDate: delay.dateCurrent,
+        })
         .then((response) => {
           this.addArchiveConstraint(delay);
         })
@@ -318,30 +301,26 @@ export default {
     //arsiv kisitina ekleniyor.
     addArchiveConstraint(item) {
       axios
-        .post(
-          `${CONFIG.api.invokeUrl}archiveConstraint`,
-          {
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            aboveLine:item.aboveLine,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .post(`archiveConstraint`, {
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          aboveLine: item.aboveLine,
+        })
         .then((response) => {
           this.deleteConstraintArchive(item);
         })
@@ -350,9 +329,7 @@ export default {
     //kisit tablosundan eklenen satır silinir.
     deleteConstraintArchive(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}constraint/${item.constraintID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`constraint/${item.constraintID}`)
         .then((response) => {
           this.fetchData();
         })
@@ -377,8 +354,7 @@ export default {
       if (this.items.length !== 0) {
         this.uploading = true;
         axios
-          .get(`${CONFIG.api.invokeUrl}excelPlan?isMark=${true}`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
+          .get(`excelPlan?isMark=${true}`, {
             responseType: "blob",
           })
           .then((result) => {
@@ -402,75 +378,67 @@ export default {
     },
     transferToMeeting(item) {
       axios
-        .post(
-          `${CONFIG.api.invokeUrl}meeting`,
-          {
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            changedAmount: 1,
-            companyTeamCode: item.companyTeamCode,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .post(`meeting`, {
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          changedAmount: 1,
+          companyTeamCode: item.companyTeamCode,
+        })
         .then((response) => {
           this.messageModal =
-            "Yan sanayi firmalar ve ekipler toplantı sayfalarına aktarıldı.";
+            "Ekipler ve yan sanayi firmalar toplantı sayfalarına aktarıldı.";
           this.successModal = true;
         })
         .catch((e) => {
           this.messageModal =
-            "Yan sanayi firmalar ve ekipler toplantı sayfalarına aktarılamadı.Tekrar Deneyiniz!";
+            "Ekipler ve yan sanayi firmalar toplantı sayfalarına aktarılamadı.Tekrar Deneyiniz!";
           this.dangerModal = true;
         });
     },
     transferToMeetingTeam(item) {
       axios
-        .post(
-          `${CONFIG.api.invokeUrl}meetingTeam`,
-          {
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .post(`meetingTeam`, {
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+        })
         .then((response) => {
           this.messageModal =
-           "Yan sanayi firmalar ve ekipler toplantı sayfalarına aktarıldı.";
+            "Ekipler ve yan sanayi firmalar toplantı sayfalarına aktarıldı.";
           this.successModal = true;
         })
         .catch((e) => {
           this.messageModal =
-            "Yan sanayi firmalar ve ekipler toplantı sayfalarına aktarılamadı.Tekrar Deneyiniz!";
+            "Ekipler ve yan sanayi firmalar toplantı sayfalarına aktarılamadı.Tekrar Deneyiniz!";
           this.dangerModal = true;
         });
     },

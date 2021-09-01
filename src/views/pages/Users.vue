@@ -116,9 +116,7 @@ export default {
   methods: {
     fetch() {
       axios
-        .get(`${CONFIG.api.invokeUrl}user`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`user`)
         .then((response) => {
           this.items = response.data.map((t) => this.changeType(t));
           var i = 0;
@@ -155,9 +153,7 @@ export default {
     },
     deleteMethod(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}user/${item.userID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`user/${item.userID}`)
         .then((response) => {
           this.message = "Silindi";
           this.successModal = true;
@@ -172,21 +168,15 @@ export default {
       if (item.userType === "Yönetici") item.userType = "U";
       else if ("Kullanıcı") item.userType = "A";
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}user/${item.userID}`,
-          {
-            userID: item.userID,
-            userType: item.userType,
-            password: item.password,
-            email: item.email,
-            isActive: item.isActive,
-            createdTime: item.createdTime,
-            permissionForConstraint: item.permissionForConstraint,
-          },
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
-        )
+        .put(`user/${item.userID}`, {
+          userID: item.userID,
+          userType: item.userType,
+          password: item.password,
+          email: item.email,
+          isActive: item.isActive,
+          createdTime: item.createdTime,
+          permissionForConstraint: item.permissionForConstraint,
+        })
         .then((response) => {
           this.message = "Hesap Türü Değiştirildi";
           this.successModal = true;

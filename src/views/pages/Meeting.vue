@@ -297,9 +297,7 @@ export default {
       this.uploading = true;
       this.items = [];
       axios
-        .get(`${CONFIG.api.invokeUrl}meeting`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`meeting`)
         .then((response) => {
           this.uploading = false;
           var i = 0;
@@ -316,12 +314,7 @@ export default {
     fetchDataFromDate() {
       this.uploading = true;
       axios
-        .get(
-          `${CONFIG.api.invokeUrl}meeting?startDate=${this.startDate}&endDate=${this.endDate}`,
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
-        )
+        .get(`meeting?startDate=${this.startDate}&endDate=${this.endDate}`)
         .then((response) => {
           this.uploading = false;
           var i = 0;
@@ -343,31 +336,27 @@ export default {
     },
     copyLine(item) {
       axios
-        .post(
-          `${CONFIG.api.invokeUrl}meeting/${item.constraintID}`,
-          {
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            changedAmount: 1,
-            companyTeamCode: item.companyTeamCode,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .post(`meeting/${item.constraintID}`, {
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          changedAmount: 1,
+          companyTeamCode: item.companyTeamCode,
+        })
         .then((response) => {
           if (this.getDate) this.fetchDataFromDate();
           else this.fetch();
@@ -381,9 +370,7 @@ export default {
     },
     deleteItem(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}meeting/${item.constraintID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`meeting/${item.constraintID}`)
         .then((response) => {
           if (this.getDate) this.fetchDataFromDate();
           else this.fetch();
@@ -408,31 +395,27 @@ export default {
     },
     updateMethod(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}meeting/${item.constraintID}`,
-          {
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            changedAmount: 1,
-            companyTeamCode: item.companyTeamCode,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`meeting/${item.constraintID}`, {
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          changedAmount: 1,
+          companyTeamCode: item.companyTeamCode,
+        })
         .then((response) => {
           this.updateButton = false;
           this.message = "Güncelleme Başarılı";
@@ -448,9 +431,7 @@ export default {
     },
     fetchReasons() {
       axios
-        .get(`${CONFIG.api.invokeUrl}postponementReason`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`postponementReason`)
         .then((response) => {
           this.reasons = response.data.map((x) => x.delayName);
         })
@@ -458,9 +439,7 @@ export default {
     },
     fetchPersons() {
       axios
-        .get(`${CONFIG.api.invokeUrl}chargePersons`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`chargePersons`)
         .then((response) => {
           this.persons = response.data.map((x) => x.personName);
         })
@@ -468,9 +447,7 @@ export default {
     },
     fetchTeams() {
       axios
-        .get(`${CONFIG.api.invokeUrl}companyTeam`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`companyTeam`)
         .then((response) => {
           this.teams = response.data.map((x) => x.companyName);
         })
@@ -484,7 +461,7 @@ export default {
       }
     },
     toogleMultipleCopy(item) {
-      this.copylineCount=0;
+      this.copylineCount = 0;
       this.copyModal = true;
       this.multipleCopyItem = item;
     },

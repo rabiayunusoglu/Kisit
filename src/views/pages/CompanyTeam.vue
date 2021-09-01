@@ -91,7 +91,7 @@
         <CModal title="Firma-Ekip Düzenle" size="lg" :show.sync="updateModal">
           <CCardBody>
             <CInput label="Firma-Ekip Adı:" horizontal placeholder="Giriniz..." v-model="update.companyName" />
-            <CInput label="Satıcı Kodu:" horizontal placeholder="Giriniz..." v-model="update.companyCode" :readonly="toggleModifySalerCode(update)"/>
+            <CInput label="Satıcı Kodu:" horizontal placeholder="Giriniz..." v-model="update.companyCode" :readonly="toggleModifySalerCode(update)" />
           </CCardBody>
           <div slot="footer" class="w-100">
             <CButton style="border-radius: 0.2rem; color: white" color="info" class="ml-1 mr-1 float-right" @click="updateMethod(update)">
@@ -118,7 +118,7 @@ export default {
       addCode: "-",
       largeModal: false,
       fields: [
-         { key: "id", label: "#", _style: "width:1cm;" },
+        { key: "id", label: "#", _style: "width:1cm;" },
         {
           key: "companyName",
           label: "Firma-Ekip İsmi",
@@ -149,11 +149,7 @@ export default {
     addMethod(name, code) {
       if (name !== "") {
         axios
-          .post(
-            `${CONFIG.api.invokeUrl}companyTeam`,
-            { companyName: name, companyCode: code },
-            { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-          )
+          .post(`companyTeam`, { companyName: name, companyCode: code })
           .then((response) => {
             this.largeModal = false;
             this.fetchData();
@@ -171,11 +167,7 @@ export default {
     addCompanyMethod(name, code) {
       if (name !== "" && code !== "") {
         axios
-          .post(
-            `${CONFIG.api.invokeUrl}companyTeam`,
-            { companyName: name, companyCode: code },
-            { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-          )
+          .post(`companyTeam`, { companyName: name, companyCode: code })
           .then((response) => {
             this.companyModal = false;
             this.fetchData();
@@ -191,31 +183,29 @@ export default {
       }
     },
     toggleModifySalerCode(item) {
-     if(item.companyCode==="-")
-     return true;
-     return false;
+      if (item.companyCode === "-") return true;
+      return false;
     },
     fetchData() {
       axios
-        .get(`${CONFIG.api.invokeUrl}companyTeam`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`companyTeam`)
         .then((response) => {
-         var i=0;
-          this.items = response.data.map(item=>{return{...item,id:++i}});
+          var i = 0;
+          this.items = response.data.map((item) => {
+            return { ...item, id: ++i };
+          });
         })
         .catch((e) => {});
     },
     updateMethod(item) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}companyTeam/${item.companyID}`,
+          `companyTeam/${item.companyID}`,
           {
             companyID: item.companyID,
             companyName: item.companyName,
             companyCode: item.companyCode,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           this.toggleUpdateModal();
@@ -235,9 +225,7 @@ export default {
     },
     deleteMethod(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}companyTeam/${item.companyID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`companyTeam/${item.companyID}`)
         .then((response) => {
           this.fetchData();
           this.message = "Silindi";

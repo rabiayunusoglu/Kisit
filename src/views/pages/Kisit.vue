@@ -448,9 +448,7 @@ export default {
       this.checkedConstraint = [];
 
       axios
-        .get(`${CONFIG.api.invokeUrl}user?hasPermissionConstraint=${false}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`user?hasPermissionConstraint=${false}`)
         .then((response) => {
           if (response.data) {
             this.searchMaterial =
@@ -472,12 +470,7 @@ export default {
         this.enteredDelayAmount = 0;
         this.inputBoxDelayAmount = 0;
         axios
-          .get(
-            `${CONFIG.api.invokeUrl}constraint?material=${this.searchMaterial}`,
-            {
-              headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-            }
-          )
+          .get(`constraint?material=${this.searchMaterial}`)
           .then((response) => {
             this.uploading = false;
             this.toogleConstraintTable();
@@ -504,9 +497,7 @@ export default {
     fetchDataDelay() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}delayHistory`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`delayHistory`)
           .then((response) => {
             this.itemsDelay = response.data.map((x) => {
               return { ...x, constraintDelayID: "" };
@@ -518,9 +509,7 @@ export default {
     fetchReasons() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}postponementReason`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`postponementReason`)
           .then((response) => {
             this.reasons = response.data.map((x) => x.delayName);
           })
@@ -530,9 +519,7 @@ export default {
     fetchPersons() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}chargePersons`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`chargePersons`)
           .then((response) => {
             this.persons = response.data.map((x) => x.personName);
           })
@@ -542,9 +529,7 @@ export default {
     fetchTeams() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}companyTeam`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`companyTeam`)
           .then((response) => {
             this.teams = response.data.map((x) => x.companyName);
           })
@@ -664,7 +649,7 @@ export default {
         item.delayDetail = "-";
       axios
         .post(
-          `${CONFIG.api.invokeUrl}delayHistory`,
+          `delayHistory`,
           {
             productCode: item.productCode,
             delayCode: item.delayCode,
@@ -675,8 +660,7 @@ export default {
             companyTeam: item.companyTeam,
             chargePerson: item.chargePerson,
             madeDate: item.dateCurrent,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           this.updateConstraint(response.data.delayID, item);
@@ -689,7 +673,7 @@ export default {
     updateConstraint(id, item) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}constraint/${item.constraintID}`,
+          `constraint/${item.constraintID}`,
           {
             isMarked: false,
             isDelayEntered: true,
@@ -714,8 +698,7 @@ export default {
             treeAmount: item.treeAmount,
             mip: item.mip,
             tob: item.tob,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           item._checked = false;
@@ -755,7 +738,7 @@ export default {
         delay.delayDetail = "-";
       axios
         .put(
-          `${CONFIG.api.invokeUrl}delayHistory/${delay.delayID}`,
+          `delayHistory/${delay.delayID}`,
           {
             isMarked: delay.isMarked,
             isArchive: delay.isArchive,
@@ -769,8 +752,7 @@ export default {
             companyTeam: delay.companyTeam,
             chargePerson: delay.chargePerson,
             madeDate: delay.madeDate,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           this.updateModal = !this.updateModal;
@@ -790,7 +772,7 @@ export default {
     updateConraintFromModal(constraintData) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}constraint/${constraintData.constraintID}`,
+          `constraint/${constraintData.constraintID}`,
           {
             isMarked: false,
             isDelayEntered: true,
@@ -815,8 +797,7 @@ export default {
             treeAmount: constraintData.treeAmount,
             mip: constraintData.mip,
             tob: constraintData.tob,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           this.toogleConstraintTable();
@@ -838,9 +819,7 @@ export default {
     },
     deleteDelayFromModal(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}delayHistory/${item.delayID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`delayHistory/${item.delayID}`)
         .then((response) => {
           if (item.delayID !== item.constraintDelayID) {
             this.messageModal = "Silindi";
@@ -858,7 +837,7 @@ export default {
     deleteConraintFromModal(constraintData) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}constraint/${constraintData.constraintID}`,
+          `constraint/${constraintData.constraintID}`,
           {
             isMarked: false,
             isDelayEntered: false,
@@ -883,8 +862,7 @@ export default {
             treeAmount: item.treeAmount,
             mip: item.mip,
             tob: item.tob,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           this.toogleConstraintTable();
@@ -956,7 +934,7 @@ export default {
           parseInt(item.delayAmount) > parseInt(item.amount) ||
           item.delayAmount < 1
         ) {
-           this.messageModal = "Öteleme miktarlarını kontrol ediniz.";
+          this.messageModal = "Öteleme miktarlarını kontrol ediniz.";
           return false;
         }
         if (item.delayReason === null || item.delayReason === "") {

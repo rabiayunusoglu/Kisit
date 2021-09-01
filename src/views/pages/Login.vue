@@ -81,7 +81,7 @@ export default {
         "utf8"
       ).toString("base64");
       axios
-        .get(`${CONFIG.api.invokeUrl}user?email=${this.username}`, {
+        .get(`user?email=${this.username}`, {
           headers: { Authorization: `Basic ${token}` },
         })
         .then((response) => {
@@ -100,9 +100,7 @@ export default {
     },
     controlIsBlock() {
       axios
-        .get(`${CONFIG.api.invokeUrl}user?hasPermissionConstraint=${false}`, {
-          headers: { Authorization: `Basic ${TokenService.getToken()}` },
-        })
+        .get(`user?hasPermissionConstraint=${false}`)
         .then((response) => {
           this.uploading = false;
           if (response.data) {

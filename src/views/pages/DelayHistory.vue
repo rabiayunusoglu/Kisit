@@ -137,9 +137,7 @@ export default {
         this.items = [];
 
         axios
-          .get(`${CONFIG.api.invokeUrl}constraint`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`constraint`)
           .then((response) => {
             this.items = response.data;
           })
@@ -149,9 +147,7 @@ export default {
     fetchDataDelay() {
       if (this.searchProduct !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}delayHistory`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`delayHistory`)
           .then((response) => {
             this.itemsDelay = response.data.filter(
               (t) =>
@@ -166,9 +162,7 @@ export default {
     fetchReasons() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}postponementReason`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`postponementReason`)
           .then((response) => {
             this.reasons = response.data.map((x) => x.delayName);
           })
@@ -178,9 +172,7 @@ export default {
     fetchPersons() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}chargePersons`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`chargePersons`)
           .then((response) => {
             this.persons = response.data.map((x) => x.personName);
           })
@@ -190,9 +182,7 @@ export default {
     fetchTeams() {
       if (this.searchMaterial !== "") {
         axios
-          .get(`${CONFIG.api.invokeUrl}companyTeam`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          })
+          .get(`companyTeam`)
           .then((response) => {
             this.teams = response.data.map((x) => x.companyName);
           })
@@ -209,7 +199,7 @@ export default {
     updateDelayFromModal(delay) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}delayHistory/${delay.delayID}`,
+          `delayHistory/${delay.delayID}`,
           {
             isMarked: delay.isMarked,
             isArchive: delay.isArchive,
@@ -223,8 +213,7 @@ export default {
             companyTeam: delay.companyTeam,
             chargePerson: delay.chargePerson,
             madeDate: delay.madeDate,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          }
         )
         .then((response) => {
           this.updateModal = !this.updateModal;
@@ -249,9 +238,7 @@ export default {
     },
     deleteDelayFromModal(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}delayHistory/${item.delayID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`delayHistory/${item.delayID}`)
         .then((response) => {
           this.message = "Silindi";
           this.successModal=true;
@@ -267,7 +254,7 @@ export default {
       if (temp.length === 0) {
         axios
           .put(
-            `${CONFIG.api.invokeUrl}delayHistory/${delay.delayID}`,
+            `delayHistory/${delay.delayID}`,
             {
               isMarked: delay.isMarked,
               isArchive: true,
@@ -281,8 +268,7 @@ export default {
               companyTeam: delay.companyTeam,
               chargePerson: delay.chargePerson,
               madeDate: delay.madeDate,
-            },
-            { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+            }
           )
           .then((response) => {
             this.fetch();

@@ -169,7 +169,7 @@ export default {
       elementCover: false,
       startDate: new Date().toISOString().substr(0, 10),
       endDate: new Date().toISOString().substr(0, 10),
-      isUsingDateFilter:false,
+      isUsingDateFilter: false,
     };
   },
   mounted() {
@@ -181,9 +181,7 @@ export default {
       this.itemsReasons = [];
       this.uploading = true;
       axios
-        .get(`${CONFIG.api.invokeUrl}meetingTeam?action=${"Reason"}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`meetingTeam?action=${"Reason"}`)
         .then((response) => {
           this.uploading = false;
           this.itemsReasons = response.data;
@@ -195,9 +193,7 @@ export default {
     },
     fetchTeamName() {
       axios
-        .get(`${CONFIG.api.invokeUrl}meetingTeam?action=${"Team"}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`meetingTeam?action=${"Team"}`)
         .then((response) => {
           this.items = response.data.map((x) => {
             return { ...x, hide: true };
@@ -221,12 +217,9 @@ export default {
     fetchDataFromDateTeam() {
       axios
         .get(
-          `${CONFIG.api.invokeUrl}meetingTeam?action=${"Team"}&startDate=${
-            this.startDate
-          }&endDate=${this.endDate}`,
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
+          `meetingTeam?action=${"Team"}&startDate=${this.startDate}&endDate=${
+            this.endDate
+          }`
         )
         .then((response) => {
           this.uploading = false;
@@ -234,7 +227,7 @@ export default {
           this.items = response.data.map((x) => {
             return { ...x, hide: true };
           });
-          this.isUsingDateFilter===true
+          this.isUsingDateFilter === true;
         })
         .catch((e) => {
           this.uploading = false;
@@ -244,17 +237,13 @@ export default {
       this.uploading = true;
       axios
         .get(
-          `${CONFIG.api.invokeUrl}meetingTeam?action=${"Reason"}&startDate=${
-            this.startDate
-          }&endDate=${this.endDate}`,
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
+          `meetingTeam?action=${"Reason"}&startDate=${this.startDate}&endDate=${
+            this.endDate
+          }`
         )
         .then((response) => {
           this.itemsReasons = response.data;
           this.fetchDataFromDateTeam();
-          
         })
         .catch((e) => {
           this.uploading = false;
@@ -275,11 +264,10 @@ export default {
         }
       }
     },
-     Export() {
-      if (this.items.length !== 0 || this.isUsingDateFilter===true) {
+    Export() {
+      if (this.items.length !== 0 || this.isUsingDateFilter === true) {
         axios
-          .get(`${CONFIG.api.invokeUrl}excelMeeting?name=${"Team"}`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
+          .get(`excelMeeting?name=${"Team"}`, {
             responseType: "blob",
           })
           .then((result) => {
@@ -303,9 +291,10 @@ export default {
       if (this.items.length !== 0) {
         axios
           .get(
-            `${CONFIG.api.invokeUrl}excelMeeting?name=${"Team"}&startDate=${this.startDate}&endDate=${this.endDate}`,
+            `excelMeeting?name=${"Team"}&startDate=${this.startDate}&endDate=${
+              this.endDate
+            }`,
             {
-              headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
               responseType: "blob",
             }
           )

@@ -125,19 +125,16 @@ export default {
   methods: {
     fetch() {
       axios
-        .get(`${CONFIG.api.invokeUrl}meeting`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`meeting`)
         .then((response) => {
           this.items = response.data;
         })
         .catch((e) => {});
     },
     Export() {
-      if (this.items.length !== 0 || this.isUsingDateFilter===true) {
+      if (this.items.length !== 0 || this.isUsingDateFilter === true) {
         axios
-          .get(`${CONFIG.api.invokeUrl}excelMeeting?name=${"Company"}`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
+          .get(`excelMeeting?name=${"Company"}`, {
             responseType: "blob",
           })
           .then((result) => {
@@ -169,12 +166,7 @@ export default {
      */
     fetchDataFromDate() {
       axios
-        .get(
-          `${CONFIG.api.invokeUrl}meeting?startDate=${this.startDate}&endDate=${this.endDate}`,
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
-        )
+        .get(`meeting?startDate=${this.startDate}&endDate=${this.endDate}`)
         .then((response) => {
           this.items = response.data;
           this.isUsingDateFilter = true;
@@ -188,9 +180,10 @@ export default {
       if (this.items.length !== 0) {
         axios
           .get(
-            `${CONFIG.api.invokeUrl}excelMeeting?name=${"Company"}&startDate=${this.startDate}&endDate=${this.endDate}`,
+            `excelMeeting?name=${"Company"}&startDate=${
+              this.startDate
+            }&endDate=${this.endDate}`,
             {
-              headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
               responseType: "blob",
             }
           )

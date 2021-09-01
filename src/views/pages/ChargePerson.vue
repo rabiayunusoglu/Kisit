@@ -120,11 +120,7 @@ export default {
     addMethod(name) {
       if (name !== "") {
         axios
-          .post(
-            `${CONFIG.api.invokeUrl}chargePersons`,
-            { personName: name },
-            { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-          )
+          .post(`chargePersons`, { personName: name })
           .then((response) => {
             this.largeModal = false;
             this.fetchData();
@@ -140,22 +136,21 @@ export default {
     },
     fetchData() {
       axios
-        .get(`${CONFIG.api.invokeUrl}chargePersons`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`chargePersons`)
         .then((response) => {
-          var i=0;
-          this.items = response.data.map(item=>{return{...item,id:++i}});
+          var i = 0;
+          this.items = response.data.map((item) => {
+            return { ...item, id: ++i };
+          });
         })
         .catch((e) => {});
     },
     updateMethod(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}chargePersons/${item.personID}`,
-          { personID: item.personID, personName: item.personName },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`chargePersons/${item.personID}`, {
+          personID: item.personID,
+          personName: item.personName,
+        })
         .then((response) => {
           this.toggleUpdateModal();
           this.update = [];
@@ -174,9 +169,7 @@ export default {
     },
     deleteMethod(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}chargePersons/${item.personID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`chargePersons/${item.personID}`)
         .then((response) => {
           this.fetchData();
           this.message = "Silindi";

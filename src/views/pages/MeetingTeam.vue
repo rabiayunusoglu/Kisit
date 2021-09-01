@@ -239,9 +239,7 @@ export default {
       this.items = [];
       this.uploading = true;
       axios
-        .get(`${CONFIG.api.invokeUrl}meetingTeam`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`meetingTeam`)
         .then((response) => {
           this.uploading = false;
           var i = 0;
@@ -258,12 +256,7 @@ export default {
     fetchDataFromDate() {
       this.uploading = true;
       axios
-        .get(
-          `${CONFIG.api.invokeUrl}meetingTeam?startDate=${this.startDate}&endDate=${this.endDate}`,
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
-        )
+        .get(`meetingTeam?startDate=${this.startDate}&endDate=${this.endDate}`)
         .then((response) => {
           this.uploading = false;
           var i = 0;
@@ -285,9 +278,7 @@ export default {
     },
     deleteItem(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}meetingTeam/${item.constraintID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`meetingTeam/${item.constraintID}`)
         .then((response) => {
           // this.message=("Silindi");
           //this.successModal=true;
@@ -302,9 +293,7 @@ export default {
     yesItem() {
       this.warningModal = false;
       console.log(this.items);
-      if (this.items.length !== 0)
-        this.items.map((x) => this.deleteItem(x));
-     
+      if (this.items.length !== 0) this.items.map((x) => this.deleteItem(x));
     },
     deleteAllItem() {
       this.message = "Hepsi silinecek emin misiniz?";
@@ -316,29 +305,25 @@ export default {
     },
     updateMethod(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}meetingTeam/${item.constraintID}`,
-          {
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`meetingTeam/${item.constraintID}`, {
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+        })
         .then((response) => {
           this.updateButton = false;
           this.message = "Güncelleme Başarılı";
@@ -354,9 +339,7 @@ export default {
     },
     fetchReasons() {
       axios
-        .get(`${CONFIG.api.invokeUrl}postponementReason`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`postponementReason`)
         .then((response) => {
           this.reasons = response.data.map((x) => x.delayName);
         })
@@ -364,9 +347,7 @@ export default {
     },
     fetchPersons() {
       axios
-        .get(`${CONFIG.api.invokeUrl}chargePersons`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`chargePersons`)
         .then((response) => {
           this.persons = response.data.map((x) => x.personName);
         })
@@ -374,9 +355,7 @@ export default {
     },
     fetchTeams() {
       axios
-        .get(`${CONFIG.api.invokeUrl}companyTeam`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`companyTeam`)
         .then((response) => {
           this.teams = response.data.map((x) => x.companyName);
         })

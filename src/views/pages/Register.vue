@@ -73,7 +73,7 @@ export default {
       successModal: false,
       warningModal: false,
       message: "",
-      blockControl:false,
+      blockControl: false,
       fields: [
         {
           key: "userType",
@@ -115,7 +115,9 @@ export default {
       } else if (this.password.length > 10 || this.password.length < 3) {
         this.message = "Şifre En Küçük 3 En Büyük 10 Karakter Olmalıdır.";
         this.warningModal = true;
-      } else if (this.items.filter((t) => t.email === this.username).length !== 0) {
+      } else if (
+        this.items.filter((t) => t.email === this.username).length !== 0
+      ) {
         this.message = this.username + " kullanıcı zaten kayıtlı.";
         this.dangerModal = true;
       } else {
@@ -124,20 +126,14 @@ export default {
         else if (this.type === "Yönetici") this.type = "A";
 
         axios
-          .post(
-            `${CONFIG.api.invokeUrl}user`,
-            {
-              userType: this.type,
-              password: this.password,
-              email: this.username,
-              isActive: true,
-              permissionForConstraint: this.blockControl,
-              createdTime: "2021-08-20",
-            },
-            {
-              headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-            }
-          )
+          .post(`user`, {
+            userType: this.type,
+            password: this.password,
+            email: this.username,
+            isActive: true,
+            permissionForConstraint: this.blockControl,
+            createdTime: "2021-08-20",
+          })
           .then((response) => {
             this.message = "Eklendi";
             this.successModal = true;
@@ -153,9 +149,7 @@ export default {
     },
     fetch() {
       axios
-        .get(`${CONFIG.api.invokeUrl}user`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`user`)
         .then((response) => {
           this.items = response.data;
           this.type = "";
@@ -170,19 +164,15 @@ export default {
     },
     controlIsBlock() {
       axios
-        .get(`${CONFIG.api.invokeUrl}user?hasPermissionConstraint=${false}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`user?hasPermissionConstraint=${false}`)
         .then((response) => {
           if (response.data) {
             this.blockControl = false;
           } else {
-            this.blockControl=true;
+            this.blockControl = true;
           }
         })
-        .catch((e) => {
-          
-        });
+        .catch((e) => {});
     },
   },
 };

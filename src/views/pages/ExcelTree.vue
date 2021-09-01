@@ -80,7 +80,7 @@ export default {
      const formData=new FormData();
      formData.append('file',this.file);
      axios
-        .post(`${CONFIG.api.invokeUrl}excelTree`, formData,{headers: {'Authorization': `Basic ${ServiceToken.getToken()}`}})
+        .post(`excelTree`, formData)
         .then((response) => {
           this.successModal=true;
           this.elementCover=false;

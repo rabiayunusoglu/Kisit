@@ -100,7 +100,7 @@ export default {
       addValue: "",
       largeModal: false,
       fields: [
-         { key: "id", label: "#", _style: "width:1cm;" },
+        { key: "id", label: "#", _style: "width:1cm;" },
         {
           key: "versionName",
           label: "Hat Bilgisi",
@@ -128,57 +128,52 @@ export default {
     addMethod(name, val) {
       if (name !== "" && val !== "") {
         axios
-          .post(
-            `${CONFIG.api.invokeUrl}version`,
-            { versionName: name, versionValue: val },
-            { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-          )
+          .post(`version`, {
+            versionName: name,
+            versionValue: val,
+          })
           .then((response) => {
             this.largeModal = false;
             this.fetchData();
             this.addNew = "";
             this.addValue = "";
-            this.message=("Eklendi");
-            this.successModal=true;
+            this.message = "Eklendi";
+            this.successModal = true;
           })
           .catch((e) => {
-            this.message=("Eklenemedi!");
-            this.dangerModal=true;
+            this.message = "Eklenemedi!";
+            this.dangerModal = true;
           });
       }
     },
     fetchData() {
       axios
-        .get(`${CONFIG.api.invokeUrl}version`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`version`)
         .then((response) => {
-          var i=0;
-          this.items = response.data.map(item=>{return{...item,id:++i}});
+          var i = 0;
+          this.items = response.data.map((item) => {
+            return { ...item, id: ++i };
+          });
         })
         .catch((e) => {});
     },
     updateMethod(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}version/${item.versionID}`,
-          {
-            versionID: item.versionID,
-            versionName: item.versionName,
-            versionValue: item.versionValue,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`version/${item.versionID}`, {
+          versionID: item.versionID,
+          versionName: item.versionName,
+          versionValue: item.versionValue,
+        })
         .then((response) => {
           this.toggleUpdateModal();
           this.update = [];
           this.fetchData();
-          this.message=("Güncellendi");
-          this.successModal=true;
+          this.message = "Güncellendi";
+          this.successModal = true;
         })
         .catch((e) => {
-          this.message=("Güncellenemedi!");
-          this.dangerModal=true;
+          this.message = "Güncellenemedi!";
+          this.dangerModal = true;
         });
     },
     toggleUpdateModal(item) {
@@ -187,17 +182,15 @@ export default {
     },
     deleteMethod(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}version/${item.versionID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`version/${item.versionID}`)
         .then((response) => {
           this.fetchData();
-          this.message=("Silindi");
-          this.successModal=true;
+          this.message = "Silindi";
+          this.successModal = true;
         })
         .catch((e) => {
-          this.message=("Silinemedi!");
-          this.dangerModal=true;
+          this.message = "Silinemedi!";
+          this.dangerModal = true;
         });
     },
   },

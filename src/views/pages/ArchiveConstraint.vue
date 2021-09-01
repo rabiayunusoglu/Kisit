@@ -124,17 +124,20 @@
   </div>
 </template>
 <script>
-import CONFIG from "@/config.json";
 import axios from "axios";
 import ServiceToken from "../../service/TokenService";
-
 export default {
   name: "ArchiveConstraint",
   data() {
     return {
       fields: [
-         { key: "id", label: "#", _style: "width:1cm;", sorter: false,
-          filter: false,},
+        {
+          key: "id",
+          label: "#",
+          _style: "width:1cm;",
+          sorter: false,
+          filter: false,
+        },
         {
           key: "marked",
           label: "Seç",
@@ -157,8 +160,13 @@ export default {
         { key: "companyTeam", label: "Firma-Takım", _style: "width:1cm" },
         { key: "chargePerson", label: "Sorumlu Birey", _style: "width:1cm" },
         { key: "dateCurrent", label: "Girildiği Tarih", _style: "width:1cm" },
-        { key: "delete", label: "Sil", _style: "width:1cm", sorter: false,
-          filter: false, },
+        {
+          key: "delete",
+          label: "Sil",
+          _style: "width:1cm",
+          sorter: false,
+          filter: false,
+        },
       ],
       items: [],
       markedList: [],
@@ -183,17 +191,15 @@ export default {
     zaten arsivden cikarirken otomatik isaretlenmise gidecegi icin isMarked true olmalidir.*/
     fetchData() {
       this.items = [];
-      this.markedList=[];
+      this.markedList = [];
       this.uploading = true;
       axios
-        .get(`${CONFIG.api.invokeUrl}archiveConstraint`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get("archiveConstraint")
         .then((response) => {
           this.uploading = false;
-          var i=0;
+          var i = 0;
           this.items = response.data.map((x) => {
-            return { ...x, isMarked: false, id:++i };
+            return { ...x, isMarked: false, id: ++i };
           });
         })
         .catch((e) => {
@@ -213,7 +219,7 @@ export default {
         else this.fetchData();
         this.messageModal = "Arşivden Çıkarıldı";
         this.successModal = true;
-              }
+      }
     },
     /**
      * Postlama islemi sirasinda kisitin bagli oldugu oteleme gecmisi arsivden put'lama islemi ile cikarilir.
@@ -221,32 +227,28 @@ export default {
      */
     postConstraintForMarked(item) {
       axios
-        .post(
-          `${CONFIG.api.invokeUrl}constraint`,
-          {
-            isMarked: true,
-            isDelayEntered: true,
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            aboveLine:item.aboveLine,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .post("constraint", {
+          isMarked: true,
+          isDelayEntered: true,
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          aboveLine: item.aboveLine,
+        })
         .then((response) => {
           this.updateDelayhistory(item);
           this.deleteArchiveConstraint(item);
@@ -257,12 +259,9 @@ export default {
     },
     deleteArchiveConstraint(item) {
       axios
-        .delete(
-          `${CONFIG.api.invokeUrl}archiveConstraint/${item.constraintID}`,
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .delete(`archiveConstraint/${item.constraintID}`)
         .then((response) => {
-          this.warningModal=false;
+          this.warningModal = false;
           //this.messageModal=("Başarıyla Silindi!");
           if (this.isUsingDateFilter) this.fetchDataFromDate();
           else this.fetchData();
@@ -274,24 +273,20 @@ export default {
     },
     updateDelayhistory(delay) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}delayHistory/${delay.delayID}`,
-          {
-            isMarked: delay.isMarked,
-            isArchive: false,
-            delayID: delay.delayID,
-            productCode: delay.productCode,
-            delayCode: delay.delayCode,
-            delayAmount: delay.delayAmount,
-            delayDate: delay.delayDate,
-            delayReason: delay.delayReason,
-            delayDetail: delay.delayDetail,
-            companyTeam: delay.companyTeam,
-            chargePerson: delay.chargePerson,
-            madeDate: delay.madeDate,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`delayHistory/${delay.delayID}`, {
+          isMarked: delay.isMarked,
+          isArchive: false,
+          delayID: delay.delayID,
+          productCode: delay.productCode,
+          delayCode: delay.delayCode,
+          delayAmount: delay.delayAmount,
+          delayDate: delay.delayDate,
+          delayReason: delay.delayReason,
+          delayDetail: delay.delayDetail,
+          companyTeam: delay.companyTeam,
+          chargePerson: delay.chargePerson,
+          madeDate: delay.madeDate,
+        })
         .then((response) => {
           if (this.isUsingDateFilter) this.fetchDataFromDate();
           else this.fetchData();
@@ -314,11 +309,10 @@ export default {
      * Tum arsiv tablosunu exportlar
      */
     Export() {
-      if (this.items.length !== 0 || this.isUsingDateFilter===true) {
+      if (this.items.length !== 0 || this.isUsingDateFilter === true) {
         this.uploading = true;
         axios
-          .get(`${CONFIG.api.invokeUrl}excelTree`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
+          .get(`excelTree`, {
             responseType: "blob",
           })
           .then((result) => {
@@ -366,19 +360,17 @@ export default {
      */
     fetchDataFromDate() {
       this.uploading = true;
-      this.markedList=[];
+      this.markedList = [];
       axios
         .get(
-          `${CONFIG.api.invokeUrl}archiveConstraint?startDate=${this.startDate}&endDate=${this.endDate}`,
-          {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-          }
+          `archiveConstraint?startDate=${this.startDate}&endDate=${this.endDate}`
         )
         .then((response) => {
           this.uploading = false;
-          var i=0;
+          var i = 0;
           this.items = response.data.map((x) => {
-            return { ...x, isMarked: false, id:++i }});
+            return { ...x, isMarked: false, id: ++i };
+          });
           this.isUsingDateFilter = true;
         })
         .catch((e) => {
@@ -393,9 +385,8 @@ export default {
         this.uploading = true;
         axios
           .get(
-            `${CONFIG.api.invokeUrl}excelTree?startDate=${this.startDate}&endDate=${this.endDate}`,
+            `excelTree?startDate=${this.startDate}&endDate=${this.endDate}`,
             {
-              headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
               responseType: "blob",
             }
           )

@@ -120,9 +120,8 @@ export default {
       if (name !== "") {
         axios
           .post(
-            `${CONFIG.api.invokeUrl}postponementReason`,
-            { delayName: name },
-            { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+            `postponementReason`,
+            { delayName: name }
           )
           .then((response) => {
             this.largeModal = false;
@@ -139,9 +138,7 @@ export default {
     },
     fetchData() {
       axios
-        .get(`${CONFIG.api.invokeUrl}postponementReason`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`postponementReason`)
         .then((response) => {
           var i=0;
           this.items = response.data.map(item=>{return{...item,id:++i}});
@@ -151,9 +148,8 @@ export default {
     updateMethod(item) {
       axios
         .put(
-          `${CONFIG.api.invokeUrl}postponementReason/${item.delayID}`,
-          { delayID: item.delayID, delayName: item.delayName },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
+          `postponementReason/${item.delayID}`,
+          { delayID: item.delayID, delayName: item.delayName }
         )
         .then((response) => {
           this.toggleUpdateModal();
@@ -173,9 +169,7 @@ export default {
     },
     deleteMethod(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}postponementReason/${item.delayID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`postponementReason/${item.delayID}`)
         .then((response) => {
           this.fetchData();
           this.message = "Silindi";

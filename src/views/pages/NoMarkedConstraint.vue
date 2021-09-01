@@ -203,9 +203,7 @@ export default {
       this.updateModal = false;
       this.uploading = true;
       axios
-        .get(`${CONFIG.api.invokeUrl}constraint`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`constraint`)
         .then((response) => {
           this.uploading = false;
           var i = 0;
@@ -222,9 +220,7 @@ export default {
     },
     fetchReasons() {
       axios
-        .get(`${CONFIG.api.invokeUrl}postponementReason`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`postponementReason`)
         .then((response) => {
           this.reasons = response.data.map((x) => x.delayName);
         })
@@ -232,9 +228,7 @@ export default {
     },
     fetchPersons() {
       axios
-        .get(`${CONFIG.api.invokeUrl}chargePersons`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`chargePersons`)
         .then((response) => {
           this.persons = response.data.map((x) => x.personName);
         })
@@ -242,9 +236,7 @@ export default {
     },
     fetchTeams() {
       axios
-        .get(`${CONFIG.api.invokeUrl}companyTeam`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .get(`companyTeam`)
         .then((response) => {
           this.teams = response.data.map((x) => x.companyName);
         })
@@ -263,69 +255,61 @@ export default {
     },
     updateConstraintForMarked(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}constraint/${item.constraintID}`,
-          {
-            isMarked: true,
-            isDelayEntered: true,
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            aboveLine: item.aboveLine,
-            treeAmount:item.treeAmount,
-            mip:item.mip,
-            tob:item.tob
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`constraint/${item.constraintID}`, {
+          isMarked: true,
+          isDelayEntered: true,
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          aboveLine: item.aboveLine,
+          treeAmount: item.treeAmount,
+          mip: item.mip,
+          tob: item.tob,
+        })
         .then((response) => {})
         .catch((e) => {});
     },
     updateConstraint(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}constraint/${item.constraintID}`,
-          {
-            isMarked: false,
-            isDelayEntered: true,
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: item.delayID,
-            delayCode: item.delayCode,
-            delayAmount: item.delayAmount,
-            delayDate: item.delayDate,
-            delayReason: item.delayReason,
-            delayDetail: item.delayDetail,
-            companyTeam: item.companyTeam,
-            chargePerson: item.chargePerson,
-            dateCurrent: item.dateCurrent,
-            aboveLine: item.aboveLine,
-            treeAmount:item.treeAmount,
-            mip:item.mip,
-            tob:item.tob
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`constraint/${item.constraintID}`, {
+          isMarked: false,
+          isDelayEntered: true,
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: item.delayID,
+          delayCode: item.delayCode,
+          delayAmount: item.delayAmount,
+          delayDate: item.delayDate,
+          delayReason: item.delayReason,
+          delayDetail: item.delayDetail,
+          companyTeam: item.companyTeam,
+          chargePerson: item.chargePerson,
+          dateCurrent: item.dateCurrent,
+          aboveLine: item.aboveLine,
+          treeAmount: item.treeAmount,
+          mip: item.mip,
+          tob: item.tob,
+        })
         .then((response) => {})
         .catch((e) => {});
     },
@@ -348,24 +332,20 @@ export default {
     },
     updateDelayHistory(delay) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}delayHistory/${delay.delayID}`,
-          {
-            isMarked: false,
-            isArchive: delay.isArchive,
-            delayID: delay.delayID,
-            productCode: delay.productCode,
-            delayCode: delay.delayCode,
-            delayAmount: delay.amount,
-            delayDate: delay.delayDate,
-            delayReason: delay.delayReason,
-            delayDetail: delay.delayDetail,
-            companyTeam: delay.companyTeam,
-            chargePerson: delay.chargePerson,
-            madeDate: delay.dateCurrent,
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`delayHistory/${delay.delayID}`, {
+          isMarked: false,
+          isArchive: delay.isArchive,
+          delayID: delay.delayID,
+          productCode: delay.productCode,
+          delayCode: delay.delayCode,
+          delayAmount: delay.amount,
+          delayDate: delay.delayDate,
+          delayReason: delay.delayReason,
+          delayDetail: delay.delayDetail,
+          companyTeam: delay.companyTeam,
+          chargePerson: delay.chargePerson,
+          madeDate: delay.dateCurrent,
+        })
         .then((response) => {
           this.updateModal = false;
 
@@ -378,35 +358,31 @@ export default {
     },
     deleteConstraint(item) {
       axios
-        .put(
-          `${CONFIG.api.invokeUrl}constraint/${item.constraintID}`,
-          {
-            isMarked: false,
-            isDelayEntered: false,
-            constraintID: item.constraintID,
-            materialCode: item.materialCode,
-            materialText: item.materialText,
-            productCode: item.productCode,
-            plannedDate: item.plannedDate,
-            amount: item.amount,
-            customer: item.customer,
-            version: item.version,
-            delayID: "",
-            delayCode: "",
-            delayAmount: "",
-            delayDate: "",
-            delayReason: "",
-            delayDetail: "",
-            companyTeam: "",
-            chargePerson: "",
-            dateCurrent: "",
-            aboveLine: item.aboveLine,
-            treeAmount:item.treeAmount,
-            mip:item.mip,
-            tob:item.tob
-          },
-          { headers: { Authorization: `Basic ${ServiceToken.getToken()}` } }
-        )
+        .put(`constraint/${item.constraintID}`, {
+          isMarked: false,
+          isDelayEntered: false,
+          constraintID: item.constraintID,
+          materialCode: item.materialCode,
+          materialText: item.materialText,
+          productCode: item.productCode,
+          plannedDate: item.plannedDate,
+          amount: item.amount,
+          customer: item.customer,
+          version: item.version,
+          delayID: "",
+          delayCode: "",
+          delayAmount: "",
+          delayDate: "",
+          delayReason: "",
+          delayDetail: "",
+          companyTeam: "",
+          chargePerson: "",
+          dateCurrent: "",
+          aboveLine: item.aboveLine,
+          treeAmount: item.treeAmount,
+          mip: item.mip,
+          tob: item.tob,
+        })
         .then((response) => {
           this.deleteDelay(item);
           this.messageModal = "Başarıyla Silindi!";
@@ -419,9 +395,7 @@ export default {
     },
     deleteDelay(item) {
       axios
-        .delete(`${CONFIG.api.invokeUrl}delayHistory/${item.delayID}`, {
-          headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
-        })
+        .delete(`delayHistory/${item.delayID}`)
         .then((response) => {
           this.fetchData();
         })
@@ -446,8 +420,7 @@ export default {
       if (this.items.length !== 0) {
         this.uploading = true;
         axios
-          .get(`${CONFIG.api.invokeUrl}excelPlan?isMark=${false}`, {
-            headers: { Authorization: `Basic ${ServiceToken.getToken()}` },
+          .get(`excelPlan?isMark=${false}`, {
             responseType: "blob",
           })
           .then((result) => {
