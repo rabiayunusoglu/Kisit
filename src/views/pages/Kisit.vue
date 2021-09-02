@@ -241,7 +241,7 @@
           <template #details="{item}">
             <CCollapse :show="item._hide">
               <CCardBody color="light">
-                <CDataTable :items="itemsDelay.map(x=>{return { ...x, constraintID:item.constraintID,materialCode:item.materialCode,materialText:item.materialText,plannedDate:item.plannedDate,amount:item.amount,customer:item.customer, constraintDelayID:item.delayID, version:item.version}}).filter(t => t.productCode === item.productCode && t.isArchive === false)" :fields="fieldsDelay" :noItemsView='{ noResults: "Sonuç Yok", noItems: "Ötelemesi Yok" }' hover sorter items-per-page-select :items-per-page="5" :itemsPerPageSelect="{label: 'Öteleme Geçmişi'}" pagination>
+                <CDataTable :items="itemsDelay.map(x=>{return { ...x, constraintID:item.constraintID,materialCode:item.materialCode,materialText:item.materialText,plannedDate:item.plannedDate,amount:item.amount,customer:item.customer, constraintDelayID:item.delayID, version:item.version, aboveLine:item.aboveLine, mip:item.mip,tob:item.tob,treeAmount:item.treeAmount}}).filter(t => t.productCode === item.productCode && t.isArchive === false)" :fields="fieldsDelay" :noItemsView='{ noResults: "Sonuç Yok", noItems: "Ötelemesi Yok" }' hover sorter items-per-page-select :items-per-page="5" :itemsPerPageSelect="{label: 'Öteleme Geçmişi'}" pagination>
                   <template #update="{item}">
                     <center>
                       <CButton size="sm" horizontal @click="toogleDelay(item)">
@@ -859,9 +859,9 @@ export default {
             chargePerson: "",
             dateCurrent: "",
             aboveLine: constraintData.aboveLine,
-            treeAmount: item.treeAmount,
-            mip: item.mip,
-            tob: item.tob,
+            treeAmount: constraintData.treeAmount,
+            mip: constraintData.mip,
+            tob: constraintData.tob,
           }
         )
         .then((response) => {

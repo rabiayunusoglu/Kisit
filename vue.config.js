@@ -11,7 +11,8 @@ module.exports = {
     '@coreui/utils'
   ],
   devServer: {
-
+    port:8080,
+    https:false,
     host: 'localhost'
     }
 }

@@ -292,7 +292,7 @@ export default {
     },
     yesItem() {
       this.warningModal = false;
-      console.log(this.items);
+     
       if (this.items.length !== 0) this.items.map((x) => this.deleteItem(x));
     },
     deleteAllItem() {
