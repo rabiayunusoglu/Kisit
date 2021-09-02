@@ -431,7 +431,7 @@ export default {
             const url = window.URL.createObjectURL(result.data);
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", `IsaretlenmisKisitlar{${date}}.xlsx`); //or any other extension
+            link.setAttribute("download", `IsaretlenmemisKisitlar{${date}}.xlsx`); //or any other extension
             document.body.appendChild(link);
             link.click();
             this.messageModal = "Excel Dosyasına Aktarıldı.";
